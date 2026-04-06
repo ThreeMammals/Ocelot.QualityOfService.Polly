@@ -1,6 +1,6 @@
 ﻿using Ocelot.Configuration;
 
-namespace Ocelot.Provider.Polly;
+namespace Ocelot.QualityOfService.Polly;
 
 /// <summary>
 /// Polly requirements for the <see href="https://www.pollydocs.org/strategies/circuit-breaker.html">Circuit breaker resilience strategy</see>.

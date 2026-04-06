@@ -1,6 +1,6 @@
 using Polly.Registry;
 
-namespace Ocelot.Provider.Polly;
+namespace Ocelot.QualityOfService.Polly;
 
 /// <summary>
 /// Object used to identify a resilience pipeline in <see cref="ResiliencePipelineRegistry{OcelotResiliencePipelineKey}"/>.

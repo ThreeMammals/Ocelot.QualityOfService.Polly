@@ -1,6 +1,6 @@
 ﻿using Ocelot.Configuration;
 
-namespace Ocelot.Provider.Polly.Interfaces;
+namespace Ocelot.QualityOfService.Polly;
 
 /// <summary>Defines provider for Polly V8 pipelines.</summary>
 /// <typeparam name="TResult">An HTTP result type, usually it is <see cref="HttpResponseMessage"/> type.</typeparam>

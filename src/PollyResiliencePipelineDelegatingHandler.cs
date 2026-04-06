@@ -2,11 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Ocelot.Configuration;
 using Ocelot.Logging;
-using Ocelot.Provider.Polly.Interfaces;
 using Polly.CircuitBreaker;
 using System.Diagnostics;
 
-namespace Ocelot.Provider.Polly;
+namespace Ocelot.QualityOfService.Polly;
 
 public class PollyResiliencePipelineDelegatingHandler : DelegatingHandler
 {

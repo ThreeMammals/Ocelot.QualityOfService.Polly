@@ -1,13 +1,12 @@
 using Ocelot.Configuration;
 using Ocelot.Logging;
-using Ocelot.Provider.Polly.Interfaces;
 using Polly.CircuitBreaker;
 using Polly.Registry;
 using Polly.Timeout;
 using System.Linq;
 using System.Net;
 
-namespace Ocelot.Provider.Polly;
+namespace Ocelot.QualityOfService.Polly;
 
 /// <summary>
 /// Default provider for Polly V8 pipelines.

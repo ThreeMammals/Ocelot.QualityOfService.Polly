@@ -1,6 +1,6 @@
 ﻿using Ocelot.Configuration;
 
-namespace Ocelot.Provider.Polly;
+namespace Ocelot.QualityOfService.Polly;
 
 /// <summary>
 /// Polly requirements for the <see href="https://www.pollydocs.org/strategies/timeout.html">Timeout resilience strategy</see>.

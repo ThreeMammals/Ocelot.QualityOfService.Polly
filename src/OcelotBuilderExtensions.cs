@@ -4,13 +4,12 @@ using Ocelot.Configuration;
 using Ocelot.DependencyInjection;
 using Ocelot.Errors;
 using Ocelot.Logging;
-using Ocelot.Provider.Polly.Interfaces;
 using Ocelot.QualityOfService;
 using Polly.CircuitBreaker;
 using Polly.Registry;
 using Polly.Timeout;
 
-namespace Ocelot.Provider.Polly;
+namespace Ocelot.QualityOfService.Polly;
 
 public static class OcelotBuilderExtensions
 {
