@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Ocelot.Configuration;
 using Ocelot.Configuration.File;
 using Ocelot.DependencyInjection;
-using Ocelot.Testing;
+using Ocelot.Testing.Steps;
 using Polly.CircuitBreaker;
 using Polly.Timeout;
 using Shouldly;
