@@ -5,12 +5,14 @@ using Ocelot.DependencyInjection;
 using Ocelot.LoadBalancer.Balancers;
 using Ocelot.Testing.Steps;
 using System.Net;
+using TestStack.BDDfy;
+using TestStack.BDDfy.Xunit;
 
 namespace Ocelot.QualityOfService.Polly.Acceptance;
 
 public sealed class DynamicRoutingTests : DiscoverySteps
 {
-    [Fact]
+    [BddfyFact]
     [Trait("Feat", "585")] // https://github.com/ThreeMammals/Ocelot/issues/585
     [Trait("Feat", "2338")] // https://github.com/ThreeMammals/Ocelot/issues/2338
     [Trait("PR", "2339")] // https://github.com/ThreeMammals/Ocelot/pull/2339
@@ -29,9 +31,6 @@ public sealed class DynamicRoutingTests : DiscoverySteps
             MinimumThroughput = 2, // exceptions-errors
             Timeout = 500, // ms
         };
-        GivenThereIsAConfiguration(configuration);
-        GivenOcelotIsRunning(WithDiscoveryAndPolly);
-
         using var steps = new QosSteps(this);
         Counters = new int[serviceUrls.Length];
         steps.CounterStrategy = (port) =>
@@ -39,12 +38,16 @@ public sealed class DynamicRoutingTests : DiscoverySteps
             int index = Array.FindIndex(serviceUrls, url => new Uri(url).Port == port);
             int count = Interlocked.Increment(ref Counters[index]);
         };
-        await steps.TestRouteCircuitBreaker(ports, $"/{serviceName}/", globalOptions, isDiscovery: true); // test global scenario
-        await steps.TestRouteTimeout(ports, $"/{serviceName}/", globalOptions);
-        ThenServicesShouldHaveBeenCalledTimes(2, 2, 1);
+
+        this.Given(x => GivenThereIsAConfiguration(configuration))
+            .And(x => GivenOcelotIsRunning(WithDiscoveryAndPolly))
+            .When(x => steps.TestRouteCircuitBreaker(ports, $"/{serviceName}/", globalOptions, 0, true)) // test global scenario
+            .When(x => steps.TestRouteTimeout(ports, $"/{serviceName}/", globalOptions))
+            .Then(x => ThenServicesShouldHaveBeenCalledTimes(2, 2, 1))
+            .BDDfy();
     }
 
-    [Fact]
+    [BddfyFact]
     [Trait("Feat", "585")] // https://github.com/ThreeMammals/Ocelot/issues/585
     [Trait("Feat", "2338")] // https://github.com/ThreeMammals/Ocelot/issues/2338
     [Trait("PR", "2339")] // https://github.com/ThreeMammals/Ocelot/pull/2339
@@ -81,31 +84,29 @@ public sealed class DynamicRoutingTests : DiscoverySteps
             {
                 RouteKeys = ["R2"],
             };
-        GivenThereIsAConfiguration(configuration);
-        GivenOcelotIsRunning(WithDiscoveryAndPolly);
-
         var downstreamUrls = ports1.Union(ports2).Union(ports3).Select(DownstreamUrl).ToArray();
-        GivenMultipleServiceInstancesAreRunning(downstreamUrls,
-            Enumerable.Repeat(Body(), downstreamUrls.Length).ToArray(),
-            codes: Enumerable.Repeat(HttpStatusCode.NotFound, ports1.Length)
-                .Concat(Enumerable.Repeat(HttpStatusCode.InternalServerError, ports2.Length))
-                .Concat(Enumerable.Repeat(HttpStatusCode.OK, ports3.Length))
-                .ToArray());
-
+        var responses = Enumerable.Repeat(Body(), downstreamUrls.Length).ToArray();
+        var codes = Enumerable.Repeat(HttpStatusCode.NotFound, ports1.Length)
+                    .Concat(Enumerable.Repeat(HttpStatusCode.InternalServerError, ports2.Length))
+                    .Concat(Enumerable.Repeat(HttpStatusCode.OK, ports3.Length))
+                    .ToArray();
         using var steps = new QosSteps(this);
-        WhenIGetUrlOnTheApiGatewayConcurrently($"/{route1.ServiceName}/", 2);
-        ThenAllStatusCodesShouldBe(HttpStatusCode.NotFound); // QoS is switched off and the scope doesn't matter
-        ThenAllResponseBodiesShouldBe(Body());
-
         steps.CounterStrategy = (port) =>
         {
             int index = Array.FindIndex(downstreamUrls, url => new Uri(url).Port == port);
             int count = Interlocked.Increment(ref Counters[index]);
         };
-        await steps.TestRouteCircuitBreaker(ports2, $"/{route2.ServiceName}/", globalOptions, isDiscovery: true); // test global scenario
-        await steps.TestRouteTimeout(ports3, $"/{route3.ServiceName}/", route3.QoSOptions);
-
-        ThenServicesShouldHaveBeenCalledTimes(1, 1, 3, 1, 2, 0);
+        var body = Body();
+        this.Given(x => GivenThereIsAConfiguration(configuration))
+            .And(x => GivenOcelotIsRunning(WithDiscoveryAndPolly))
+            .And(x => GivenMultipleServiceInstancesAreRunning(downstreamUrls, responses, codes))
+            .When(x => WhenIGetUrlOnTheApiGatewayConcurrently($"/{route1.ServiceName}/", 2))
+            .Then(x => ThenAllStatusCodesShouldBe(HttpStatusCode.NotFound)) // QoS is switched off and the scope doesn't matter
+            .And(x => ThenAllResponseBodiesShouldBe(body))
+            .When(x => steps.TestRouteCircuitBreaker(ports2, $"/{route2.ServiceName}/", globalOptions, 0, true)) // test global scenario
+            .And(x => steps.TestRouteTimeout(ports3, $"/{route3.ServiceName}/", route3.QoSOptions))
+            .Then(x => ThenServicesShouldHaveBeenCalledTimes(1, 1, 3, 1, 2, 0))
+            .BDDfy();
     }
 
     private static void WithDiscoveryAndPolly(IServiceCollection services) => services
