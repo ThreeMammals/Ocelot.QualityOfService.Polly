@@ -15,11 +15,11 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
     <PackageReference Include="Ocelot.Testing" Version="25.0.0-beta.7" />
     <PackageReference Include="Polly.Testing" Version="8.6.6" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="4.0.0-pre.3">
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="xunit.v3" Version="4.0.0-pre.33" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
   </ItemGroup>
 
   <ItemGroup>
