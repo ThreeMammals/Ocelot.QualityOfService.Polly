@@ -3,7 +3,6 @@ using Ocelot.Logging;
 using Polly.CircuitBreaker;
 using Polly.Registry;
 using Polly.Timeout;
-using System.Linq;
 using System.Net;
 
 namespace Ocelot.QualityOfService.Polly;
@@ -17,8 +16,8 @@ public class PollyQoSResiliencePipelineProvider : IPollyQoSResiliencePipelinePro
     private readonly IOcelotLogger _logger;
     
     public PollyQoSResiliencePipelineProvider(
-        IOcelotLoggerFactory loggerFactory,
-        ResiliencePipelineRegistry<OcelotResiliencePipelineKey> registry)
+        IOcelotLoggerFactory? loggerFactory,
+        ResiliencePipelineRegistry<OcelotResiliencePipelineKey>? registry)
     {
         _logger = loggerFactory?.CreateLogger<PollyQoSResiliencePipelineProvider>() ?? throw new ArgumentNullException(nameof(loggerFactory));
         _registry = registry ?? throw new ArgumentNullException(nameof(registry));
@@ -37,7 +36,7 @@ public class PollyQoSResiliencePipelineProvider : IPollyQoSResiliencePipelinePro
         HttpStatusCode.LoopDetected,
     };
 
-    protected virtual HashSet<HttpStatusCode> ServerErrorCodes { get; } = DefaultServerErrorCodes as HashSet<HttpStatusCode>;
+    protected virtual HashSet<HttpStatusCode> ServerErrorCodes { get; } = (HashSet<HttpStatusCode>)DefaultServerErrorCodes;
     protected virtual string GetRouteName(DownstreamRoute route) => route.Name();
 
     /// <summary>
@@ -81,7 +80,7 @@ public class PollyQoSResiliencePipelineProvider : IPollyQoSResiliencePipelinePro
             return false;
         }
 
-        List<Func<string>> warnings = new(), w = warnings;
+        List<Func<string>> warnings = [], w = warnings;
         if (!qos.MinimumThroughput.Value.IsValidMinimumThroughput())
         {
             string msg1() => $"{The(w, msg1)} {nameof(CircuitBreakerStrategy.MinimumThroughput)} value ({qos.MinimumThroughput}) is less than the required {nameof(CircuitBreakerStrategy.LowMinimumThroughput)} threshold ({CircuitBreakerStrategy.LowMinimumThroughput}). Therefore, increase {nameof(qos.MinimumThroughput)} to at least {CircuitBreakerStrategy.LowMinimumThroughput} or higher. Until then, the default value ({CircuitBreakerStrategy.DefaultMinimumThroughput}) will be substituted.";
@@ -130,7 +129,7 @@ public class PollyQoSResiliencePipelineProvider : IPollyQoSResiliencePipelinePro
             return false;
         }
 
-        List<Func<string>> warnings = new(), w = warnings;
+        List<Func<string>> warnings = [], w = warnings;
         if (!timeoutMs.Value.IsValidTimeout())
         {
             string msg() => $"{The(w, msg)} {nameof(TimeoutStrategy.Timeout)} value ({timeoutMs.Value}) is outside the valid range ({TimeoutStrategy.LowTimeout} to {TimeoutStrategy.HighTimeout} milliseconds). Therefore, ensure the value falls within this range; otherwise, the default value ({TimeoutStrategy.DefaultTimeout}) will be substituted.";
@@ -145,7 +144,7 @@ public class PollyQoSResiliencePipelineProvider : IPollyQoSResiliencePipelinePro
         return true;
     }
 
-    public static string ToStr(int? value) => value.HasValue ? value.ToString() : "?";
+    public static string? ToStr(int? value) => value.HasValue ? value.ToString() : "?";
 
     public static string The(List<Func<string>> warnings, Func<string> msg)
         => warnings.Count > 1

@@ -1,34 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
-    <ImplicitUsings>disable</ImplicitUsings>
-    <Nullable>disable</Nullable>
-    <NoPackageAnalysis>true</NoPackageAnalysis>
-    <Description>Provides Ocelot extensions to use Polly.NET</Description>
-    <VersionPrefix>0.0.0-dev</VersionPrefix>
-    <PackageId>Ocelot.QualityOfService.Polly</PackageId>
-    <PackageTags>API Gateway;.NET;Polly</PackageTags>
-    <PackageProjectUrl>https://github.com/ThreeMammals/Ocelot/</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/ThreeMammals/Ocelot/assets/images/ocelot_icon_128x128.png</PackageIconUrl>
-    <RuntimeIdentifiers>win-x64;osx-x64</RuntimeIdentifiers>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <Authors>Tom Pallister, Raman Maksimchuk, Raynald Messié</Authors>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
     <CodeAnalysisRuleSet>..\..\Ocelot\codeanalysis.ruleset</CodeAnalysisRuleSet>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <NoWarn>1591</NoWarn>
+    <NoWarn>CS1591</NoWarn>
+    <!--Package properties-->
+    <Version>25.0.0-beta.1</Version>
+    <PackageId>Ocelot.QualityOfService.Polly</PackageId>
+    <PackageDescription>Provides Ocelot extensions to use Polly resilience.</PackageDescription>
+    <PackageReleaseNotes>https://github.com/ThreeMammals/Ocelot.QualityOfService.Polly/releases</PackageReleaseNotes>
+    <PackageTags>ocelot;quality-of-service;polly</PackageTags>
+    <PackageIcon>ocelot_icon.png</PackageIcon>
+    <PackageIconUrl>https://raw.githubusercontent.com/ThreeMammals/Ocelot/assets/images/ocelot_icon_128x128.png</PackageIconUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/ThreeMammals/Ocelot/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ThreeMammals/Ocelot.QualityOfService.Polly.git</RepositoryUrl>
+    <Authors>Tom Pallister, Raman Maksimchuk, Raynald Messié</Authors>
     <Company>Three Mammals</Company>
     <Product>Ocelot Gateway</Product>
     <Copyright>© 2026 Three Mammals. MIT licensed OSS</Copyright>
-    <PackageIcon>ocelot_icon.png</PackageIcon>
-    <RepositoryUrl>https://github.com/ThreeMammals/Ocelot.QualityOfService.Polly.git</RepositoryUrl>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>full</DebugType>
-    <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\LICENSE" Pack="true" PackagePath="\" Link="package\LICENSE" />

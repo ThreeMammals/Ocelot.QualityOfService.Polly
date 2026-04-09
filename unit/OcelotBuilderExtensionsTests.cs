@@ -28,7 +28,7 @@ public class OcelotBuilderExtensionsTests
             var argument = Activator.CreateInstance(type, args) as Exception;
 
             // Act
-            var actual = mappingFunc.Invoke(argument);
+            var actual = mappingFunc.Invoke(argument!);
 
             // Assert
             Assert.IsType<RequestTimedOutError>(actual);

@@ -240,10 +240,10 @@ public sealed class PollyQosTests : PollyQosSteps
         int serviceTimeoutMs = Ms(Math.Max(RouteTimeoutSeconds, GlobalTimeoutSeconds)) + 500; // total 4.5 sec
 
         var port = PortFinder.GetRandomPort();
-        var qos = new FileQoSOptions() { TimeoutValue = Ms(RouteTimeoutSeconds) };
+        var qos = new FileQoSOptions() { Timeout = Ms(RouteTimeoutSeconds) };
         var route = GivenRoute(port, new(qos));
         var configuration = GivenConfiguration(route);
-        configuration.GlobalConfiguration.QoSOptions = new() { TimeoutValue = Ms(GlobalTimeoutSeconds) }; // !!!
+        configuration.GlobalConfiguration.QoSOptions = new() { Timeout = Ms(GlobalTimeoutSeconds) }; // !!!
 
         GivenThereIsAServiceRunningOn(port, HttpStatusCode.Created, serviceTimeoutMs);
         GivenThereIsAConfiguration(configuration);
@@ -266,7 +266,7 @@ public sealed class PollyQosTests : PollyQosSteps
         FileRoute route1 = GivenRoute(ports[0], "/route1"),
             route2 = GivenRoute(ports[1], "/route2"); // without QoS timeouts
         var configuration = GivenConfiguration(route1, route2);
-        configuration.GlobalConfiguration.QoSOptions = new() { TimeoutValue = Ms(GlobalTimeoutSeconds) }; // !!!
+        configuration.GlobalConfiguration.QoSOptions = new() { Timeout = Ms(GlobalTimeoutSeconds) }; // !!!
         GivenThereIsAServiceRunningOn(ports[0], HttpStatusCode.OK, serviceTimeoutMs); // 2s -> ServiceUnavailable
         GivenThereIsAServiceRunningOn(ports[1], HttpStatusCode.OK, serviceTimeoutMs); // 2s -> ServiceUnavailable
         GivenThereIsAConfiguration(configuration);
@@ -294,8 +294,8 @@ public sealed class PollyQosTests : PollyQosSteps
         const double RouteFailureRatio = 0.50D, GlobalFailureRatio = 0.75D;
         var qos = new FileQoSOptions()
         {
-            ExceptionsAllowedBeforeBreaking = 3, // after 3 actions FailureRatio is activated
-            DurationOfBreak = CircuitBreakerStrategy.LowBreakDuration + 1,
+            MinimumThroughput = 3, // after 3 actions FailureRatio is activated
+            BreakDuration = CircuitBreakerStrategy.LowBreakDuration + 1,
             FailureRatio = RouteFailureRatio, // 50% of requests
             SamplingDuration = 1_000,
         };
@@ -325,7 +325,7 @@ public sealed class PollyQosTests : PollyQosSteps
         count.ShouldBe(4); // 2 of 4 were failed, and the service was called 4 times
         isOK = true; // the next requests should be OK
         int cicdMs = IsCiCd() ? 50 : 0;
-        await GivenIWaitMilliseconds(qos.DurationOfBreak.Value + cicdMs); // breaking period is over, thus, circuit breaker is closed
+        await GivenIWaitMilliseconds(qos.BreakDuration.Value + cicdMs); // breaking period is over, thus, circuit breaker is closed
         await WhenIGetUrlOnTheApiGateway("/"); // OK but circuit is closed
         ThenTheStatusCodeShouldBe(HttpStatusCode.OK); // circuit is closed
         await ThenTheResponseBodyShouldBeAsync(nameof(HasRouteAndGlobalFailureRatios_RouteFailureRatioShouldTakePrecedenceOverGlobalFailureRatio));
@@ -342,8 +342,8 @@ public sealed class PollyQosTests : PollyQosSteps
         var configuration = GivenConfiguration(route);
         configuration.GlobalConfiguration.QoSOptions = new()
         {
-            ExceptionsAllowedBeforeBreaking = 2, // after 2 actions FailureRatio is activated
-            DurationOfBreak = CircuitBreakerStrategy.LowBreakDuration + 1,
+            MinimumThroughput = 2, // after 2 actions FailureRatio is activated
+            BreakDuration = CircuitBreakerStrategy.LowBreakDuration + 1,
             FailureRatio = GlobalFailureRatio, // 75% of requests
             SamplingDuration = 1_000,
         }; // !!!
@@ -379,7 +379,7 @@ public sealed class PollyQosTests : PollyQosSteps
         count.ShouldBe(8); // the service was called 8 times of 10 total
         isOK = true; // the next requests should be OK
         int cicdMs = IsCiCd() ? 50 : 0;
-        await GivenIWaitMilliseconds(configuration.GlobalConfiguration.QoSOptions.DurationOfBreak.Value + cicdMs); // breaking period is over, thus, circuit breaker is closed
+        await GivenIWaitMilliseconds(configuration.GlobalConfiguration.QoSOptions.BreakDuration.Value + cicdMs); // breaking period is over, thus, circuit breaker is closed
         await WhenIGetUrlOnTheApiGateway("/"); // OK but circuit is closed
         ThenTheStatusCodeShouldBe(HttpStatusCode.OK); // circuit is closed
         await ThenTheResponseBodyShouldBeAsync(nameof(HasGlobalFailureRatioOnly_GlobalFailureRatioShouldTakePrecedenceOverPollyDefaultFailureRatio));

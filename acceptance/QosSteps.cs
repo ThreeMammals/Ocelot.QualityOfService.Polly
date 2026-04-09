@@ -18,7 +18,7 @@ public class QosSteps : AcceptanceSteps, IQosSteps
         await handler.ReleasePortAsync(ports)
             .ContinueWith(t => self.ReleasePortAsync(ports));
         int count = PollyQoSResiliencePipelineProvider.DefaultServerErrorCodes.Count;
-        HttpStatusCode[] codes = PollyQoSResiliencePipelineProvider.DefaultServerErrorCodes.ToArray();
+        HttpStatusCode[] codes = [.. PollyQoSResiliencePipelineProvider.DefaultServerErrorCodes];
         HttpStatusCode nextBadStatus = codes[DateTime.Now.Millisecond % count];
         for (int i = 0; i < ports.Length; i++)
         {
@@ -67,7 +67,7 @@ public class QosSteps : AcceptanceSteps, IQosSteps
         await self.ThenTheResponseShouldBeAsync(HttpStatusCode.OK);
     }
 
-    public Action<int> CounterStrategy { get; set; }
+    public Action<int>? CounterStrategy { get; set; }
 
     public void GivenThereIsAServiceRunningOn(int port, HttpStatusCode statusCode,
         Func<int> timeoutStrategy, Func<bool> failingStrategy, [CallerMemberName] string? response = null)

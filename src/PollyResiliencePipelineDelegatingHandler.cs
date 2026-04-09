@@ -23,7 +23,7 @@ public class PollyResiliencePipelineDelegatingHandler : DelegatingHandler
         _logger = loggerFactory.CreateLogger<PollyResiliencePipelineDelegatingHandler>();
     }
 
-    private IPollyQoSResiliencePipelineProvider<HttpResponseMessage> GetQoSProvider()
+    private IPollyQoSResiliencePipelineProvider<HttpResponseMessage>? GetQoSProvider()
     {
         Debug.Assert(_contextAccessor.HttpContext != null, "_contextAccessor.HttpContext != null");
 
@@ -42,7 +42,7 @@ public class PollyResiliencePipelineDelegatingHandler : DelegatingHandler
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var provider = GetQoSProvider();
-        var pipeline = provider.GetResiliencePipeline(_route);
+        var pipeline = provider?.GetResiliencePipeline(_route);
         if (pipeline == null)
         {
 #if DEBUG
