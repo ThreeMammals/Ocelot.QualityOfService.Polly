@@ -1,6 +1,11 @@
 [![Ocelot Logo](/ocelot_icon.png)](https://github.com/ThreeMammals/Ocelot/ "Go to Ocelot repository")
 [![Polly Logo](/polly_logo.png)](https://github.com/App-vNext/Polly/ "Go to Polly repository")
 # Ocelot.QualityOfService.Polly
+[![Release](https://github.com/ThreeMammals/Ocelot.QualityOfService.Polly/actions/workflows/release.yml/badge.svg)](https://github.com/ThreeMammals/Ocelot.QualityOfService.Polly/actions/workflows/release.yml)
+[![Publish](https://github.com/ThreeMammals/Ocelot.QualityOfService.Polly/actions/workflows/publish.yml/badge.svg)](https://github.com/ThreeMammals/Ocelot.QualityOfService.Polly/actions/workflows/publish.yml)
+[![codecov](https://codecov.io/github/ThreeMammals/Ocelot.QualityOfService.Polly/graph/badge.svg?token=v4Dj8XUaU5)](https://codecov.io/github/ThreeMammals/Ocelot.QualityOfService.Polly)
+[![NuGet](https://img.shields.io/nuget/vpre/Ocelot.QualityOfService.Polly?logo=nuget&label=NuGet)](https://www.nuget.org/packages/Ocelot.QualityOfService.Polly/ "Download Ocelot.QualityOfService.Polly from NuGet.org")
+[![Downloads](https://img.shields.io/nuget/dt/Ocelot.QualityOfService.Polly?logo=nuget&label=Downloads)](https://www.nuget.org/packages/Ocelot.QualityOfService.Polly/ "Total Ocelot.QualityOfService.Polly downloads from NuGet.org")
 
 [Ocelot](https://github.com/ThreeMammals/Ocelot) [Quality of Service](https://ocelot.readthedocs.io/en/latest/features/qualityofservice.html) feature, powered by [Polly](https://www.pollydocs.org/) integration.
 
