@@ -5,7 +5,7 @@ namespace Ocelot.QualityOfService.Polly.UnitTests;
 public class CircuitBreakerStrategyTests
 {
     [Theory]
-    [Trait("PR", "2073")]
+    [Trait("PR", "2073")] // https://github.com/ThreeMammals/Ocelot/pull/2073
     [InlineData(0, Const.DefaultBreakDuration)] // out of range
     [InlineData(500, Const.DefaultBreakDuration)] // out of range
     [InlineData(501, 501)] // in range
@@ -22,7 +22,7 @@ public class CircuitBreakerStrategyTests
     }
 
     [Theory]
-    [Trait("PR", "2073")]
+    [Trait("PR", "2073")] // https://github.com/ThreeMammals/Ocelot/pull/2073
     [InlineData(0, Const.DefaultMinimumThroughput)] // out of range
     [InlineData(1, Const.DefaultMinimumThroughput)] // out of range
     [InlineData(2, 2)] // in range
@@ -37,8 +37,8 @@ public class CircuitBreakerStrategyTests
     }
 
     [Theory]
-    [Trait("PR", "2081")]
-    [Trait("Feat", "2080")]
+    [Trait("PR", "2081")] // https://github.com/ThreeMammals/Ocelot/pull/2081
+    [Trait("Feat", "2080")] // https://github.com/ThreeMammals/Ocelot/issues/2080
     [InlineData(0.0D, Const.DefaultFailureRatio)] // out of range
     [InlineData(0.05D, 0.05D)] // in range
     [InlineData(Const.DefaultFailureRatio, Const.DefaultFailureRatio)] // in range
@@ -54,8 +54,8 @@ public class CircuitBreakerStrategyTests
     }
 
     [Theory]
-    [Trait("PR", "2081")]
-    [Trait("Feat", "2080")]
+    [Trait("PR", "2081")] // https://github.com/ThreeMammals/Ocelot/pull/2081
+    [Trait("Feat", "2080")] // https://github.com/ThreeMammals/Ocelot/issues/2080
     [InlineData(0, Const.DefaultSamplingDuration)] // out of range
     [InlineData(500, Const.DefaultSamplingDuration)] // out of range
     [InlineData(501, 501)] // in range

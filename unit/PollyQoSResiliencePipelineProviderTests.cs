@@ -15,7 +15,7 @@ public class PollyQoSResiliencePipelineProviderTests
 {
     #region Constructor
     [Theory]
-    [Trait("PR", "2073")]
+    [Trait("PR", "2073")] // https://github.com/ThreeMammals/Ocelot/pull/2073
     [InlineData(0)]
     [InlineData(1)]
     public void Ctor_NoLoggerParam_ShouldThrowArgumentNullException(int branch)
@@ -36,7 +36,7 @@ public class PollyQoSResiliencePipelineProviderTests
     }
 
     [Fact]
-    [Trait("PR", "2073")]
+    [Trait("PR", "2073")] // https://github.com/ThreeMammals/Ocelot/pull/2073
     public void Ctor_NoRegistryParam_ShouldThrowArgumentNullException()
     {
         // Arrange
@@ -79,7 +79,7 @@ public class PollyQoSResiliencePipelineProviderTests
     }
 
     [Fact]
-    [Trait("Bug", "2085")]
+    [Trait("Bug", "2085")] // https://github.com/ThreeMammals/Ocelot/issues/2085
     public void ShouldNotBuild_ReturnedEmpty()
     {
         // Arrange
@@ -99,7 +99,7 @@ public class PollyQoSResiliencePipelineProviderTests
     }
 
     [Theory]
-    [Trait("Bug", "2085")]
+    [Trait("Bug", "2085")] // https://github.com/ThreeMammals/Ocelot/issues/2085
     [InlineData(CircuitBreakerStrategy.LowBreakDuration - 1, CircuitBreakerStrategy.DefaultBreakDuration)] // default
     [InlineData(CircuitBreakerStrategy.LowBreakDuration, CircuitBreakerStrategy.DefaultBreakDuration)] // default
     [InlineData(CircuitBreakerStrategy.LowBreakDuration + 1, CircuitBreakerStrategy.LowBreakDuration + 1)] // not default, exact
@@ -174,7 +174,7 @@ public class PollyQoSResiliencePipelineProviderTests
     }
 
     [Fact]
-    [Trait("Bug", "2085")]
+    [Trait("Bug", "2085")] // https://github.com/ThreeMammals/Ocelot/issues/2085
     public void ShouldBuild_ContainsTwoStrategies()
     {
         var pollyQoSResiliencePipelineProvider = GivenProvider();
@@ -209,7 +209,7 @@ public class PollyQoSResiliencePipelineProviderTests
     }
 
     [Fact]
-    [Trait("Bug", "2085")]
+    [Trait("Bug", "2085")] // https://github.com/ThreeMammals/Ocelot/issues/2085
     public async Task Should_throw_after_timeout()
     {
         // Arrange
@@ -218,7 +218,6 @@ public class PollyQoSResiliencePipelineProviderTests
         var route = GivenDownstreamRoute("/", timeOut: OneSecond);
         var resiliencePipeline = provider.GetResiliencePipeline(route);
         var response = new HttpResponseMessage(HttpStatusCode.OK);
-        var cancellationTokenSource = new CancellationTokenSource();
 
         // Assert
         await Assert.ThrowsAsync<TimeoutRejectedException>(async () =>
@@ -229,11 +228,11 @@ public class PollyQoSResiliencePipelineProviderTests
                 await Task.Delay(OneSecond + 500, cancellationToken); // add 500ms to make sure it's timed out
                 return response;
             },
-            cancellationTokenSource.Token));
+            TestContext.Current.CancellationToken));
     }
 
     [Fact]
-    [Trait("Bug", "2085")]
+    [Trait("Bug", "2085")] // https://github.com/ThreeMammals/Ocelot/issues/2085
     public async Task Should_not_throw_before_timeout()
     {
         // Arrange
@@ -242,14 +241,13 @@ public class PollyQoSResiliencePipelineProviderTests
         var route = GivenDownstreamRoute("/", timeOut: OneSecond);
         var resiliencePipeline = provider.GetResiliencePipeline(route);
         var response = new HttpResponseMessage(HttpStatusCode.OK);
-        var cancellationTokenSource = new CancellationTokenSource();
 
         // Act
         await resiliencePipeline.ExecuteAsync(async cancellationToken =>
         {
             await Task.Delay(OneSecond - 100, cancellationToken); // subtract 100ms to make sure it's not timed out
             return response;
-        }, cancellationTokenSource.Token);
+        }, TestContext.Current.CancellationToken);
 
         // Assert
         Assert.True(response.IsSuccessStatusCode);
@@ -397,9 +395,9 @@ public class PollyQoSResiliencePipelineProviderTests
     }
 
     [Theory]
-    [Trait("PR", "2073")]
-    [Trait("Feat", "1314")]
-    [Trait("Feat", "1869")]
+    [Trait("PR", "2073")] // https://github.com/ThreeMammals/Ocelot/pull/2073
+    [Trait("Feat", "1314")] // https://github.com/ThreeMammals/Ocelot/issues/1314
+    [Trait("Feat", "1869")] // https://github.com/ThreeMammals/Ocelot/issues/1869
     [InlineData(null)]
     [InlineData(-1)]
     [InlineData(0)]
@@ -420,9 +418,9 @@ public class PollyQoSResiliencePipelineProviderTests
     }
 
     [Fact]
-    [Trait("PR", "2073")]
-    [Trait("Feat", "1314")]
-    [Trait("Feat", "1869")]
+    [Trait("PR", "2073")] // https://github.com/ThreeMammals/Ocelot/pull/2073
+    [Trait("Feat", "1314")] // https://github.com/ThreeMammals/Ocelot/issues/1314
+    [Trait("Feat", "1869")] // https://github.com/ThreeMammals/Ocelot/issues/1869
     public void ConfigureTimeout_HasInvalidTimeout_ShouldUseDefaultTimeout()
     {
         // Arrange
@@ -443,9 +441,9 @@ public class PollyQoSResiliencePipelineProviderTests
     }
 
     [Theory]
-    [Trait("PR", "2073")]
-    [Trait("Feat", "1314")]
-    [Trait("Feat", "1869")]
+    [Trait("PR", "2073")] // https://github.com/ThreeMammals/Ocelot/pull/2073
+    [Trait("Feat", "1314")] // https://github.com/ThreeMammals/Ocelot/issues/1314
+    [Trait("Feat", "1869")] // https://github.com/ThreeMammals/Ocelot/issues/1869
     [InlineData(null)]
     [InlineData(TimeoutStrategy.LowTimeout - 1)]
     public void ConfigureTimeout_ValidationIsAlwaysTrue_ShouldUseDefaultTimeout(int? invalidTimeout)
@@ -468,9 +466,9 @@ public class PollyQoSResiliencePipelineProviderTests
     }
 
     [Theory]
-    [Trait("PR", "2073")]
-    [Trait("Feat", "1314")]
-    [Trait("Feat", "1869")]
+    [Trait("PR", "2073")] // https://github.com/ThreeMammals/Ocelot/pull/2073
+    [Trait("Feat", "1314")] // https://github.com/ThreeMammals/Ocelot/issues/1314
+    [Trait("Feat", "1869")] // https://github.com/ThreeMammals/Ocelot/issues/1869
     [InlineData(null, "Route '/' has invalid QoSOptions for Polly's Timeout strategy. Specifically, the timeout is disabled because the Timeout (?) is either undefined, negative, or zero.")]
     [InlineData(-1, "Route '/' has invalid QoSOptions for Polly's Timeout strategy. Specifically, the timeout is disabled because the Timeout (-1) is either undefined, negative, or zero.")]
     public void IsConfigurationValidForTimeout_InvalidValue_ShouldLogError(int? invalidTimeout, string expectedMessage)
@@ -493,9 +491,9 @@ public class PollyQoSResiliencePipelineProviderTests
     }
 
     [Fact]
-    [Trait("PR", "2073")]
-    [Trait("Feat", "1314")]
-    [Trait("Feat", "1869")]
+    [Trait("PR", "2073")] // https://github.com/ThreeMammals/Ocelot/pull/2073
+    [Trait("Feat", "1314")] // https://github.com/ThreeMammals/Ocelot/issues/1314
+    [Trait("Feat", "1869")] // https://github.com/ThreeMammals/Ocelot/issues/1869
     public void IsConfigurationValidForTimeout_ValidValueButIsNotValidTimeout_ShouldLogWarning()
     {
         // Arrange
@@ -519,8 +517,8 @@ public class PollyQoSResiliencePipelineProviderTests
     }
 
     [Fact]
-    [Trait("PR", "2081")]
-    [Trait("Feat", "2080")]
+    [Trait("PR", "2081")] // https://github.com/ThreeMammals/Ocelot/pull/2081
+    [Trait("Feat", "2080")] // https://github.com/ThreeMammals/Ocelot/issues/2080
     public void The_ReturnedWithMessagePosition()
     {
         // Arrange 1
@@ -542,8 +540,8 @@ public class PollyQoSResiliencePipelineProviderTests
     }
 
     [Theory]
-    [Trait("PR", "2081")]
-    [Trait("Feat", "2080")]
+    [Trait("PR", "2081")] // https://github.com/ThreeMammals/Ocelot/pull/2081
+    [Trait("Feat", "2080")] // https://github.com/ThreeMammals/Ocelot/issues/2080
     [InlineData(null, "Route '/' has invalid QoSOptions for Polly's Circuit Breaker strategy. Specifically, the circuit breaker is disabled because the MinimumThroughput value (?) is either undefined, negative, or zero.")]
     [InlineData(-1, "Route '/' has invalid QoSOptions for Polly's Circuit Breaker strategy. Specifically, the circuit breaker is disabled because the MinimumThroughput value (-1) is either undefined, negative, or zero.")]
     public void IsConfigurationValidForCircuitBreaker_InvalidValue_ShouldLogError(int? exceptionsAllowedBeforeBreaking, string expectedMessage)
@@ -566,8 +564,8 @@ public class PollyQoSResiliencePipelineProviderTests
     }
 
     [Fact]
-    [Trait("PR", "2081")]
-    [Trait("Feat", "2080")]
+    [Trait("PR", "2081")] // https://github.com/ThreeMammals/Ocelot/pull/2081
+    [Trait("Feat", "2080")] // https://github.com/ThreeMammals/Ocelot/issues/2080
     public void IsConfigurationValidForCircuitBreaker_InvalidOptions_ShouldLogWarning()
     {
         // Arrange
@@ -604,8 +602,8 @@ public class PollyQoSResiliencePipelineProviderTests
     }
 
     [Fact]
-    [Trait("PR", "2081")]
-    [Trait("Feat", "2080")]
+    [Trait("PR", "2081")] // https://github.com/ThreeMammals/Ocelot/pull/2081
+    [Trait("Feat", "2080")] // https://github.com/ThreeMammals/Ocelot/issues/2080
     public void IsConfigurationValidForCircuitBreaker_NullOptions_ShouldLogWarning()
     {
         // Arrange
