@@ -7,10 +7,9 @@ using System.Runtime.CompilerServices;
 
 namespace Ocelot.QualityOfService.Polly.Acceptance;
 
-public class QosSteps : TimeoutSteps
+public class QosSteps(AcceptanceSteps self) : TimeoutSteps
 {
-    protected AcceptanceSteps self;
-    public QosSteps(AcceptanceSteps self) => this.self = self;
+    protected AcceptanceSteps self = self;
 
     public async Task TestRouteCircuitBreaker(int[] ports, string upstreamPath, FileQoSOptions qos, int index = 0, bool isDiscovery = false)
     {

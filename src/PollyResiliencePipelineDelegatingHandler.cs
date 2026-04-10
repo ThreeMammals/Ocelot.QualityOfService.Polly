@@ -7,21 +7,13 @@ using System.Diagnostics;
 
 namespace Ocelot.QualityOfService.Polly;
 
-public class PollyResiliencePipelineDelegatingHandler : DelegatingHandler
+public class PollyResiliencePipelineDelegatingHandler(
+    DownstreamRoute route, IHttpContextAccessor contextAccessor, IOcelotLoggerFactory loggerFactory)
+    : DelegatingHandler
 {
-    private readonly DownstreamRoute _route;
-    private readonly IHttpContextAccessor _contextAccessor;
-    private readonly IOcelotLogger _logger;
-
-    public PollyResiliencePipelineDelegatingHandler(
-        DownstreamRoute route,
-        IHttpContextAccessor contextAccessor,
-        IOcelotLoggerFactory loggerFactory)
-    {
-        _route = route;
-        _contextAccessor = contextAccessor;
-        _logger = loggerFactory.CreateLogger<PollyResiliencePipelineDelegatingHandler>();
-    }
+    private readonly DownstreamRoute _route = route;
+    private readonly IHttpContextAccessor _contextAccessor = contextAccessor;
+    private readonly IOcelotLogger _logger = loggerFactory.CreateLogger<PollyResiliencePipelineDelegatingHandler>();
 
     private IPollyQoSResiliencePipelineProvider<HttpResponseMessage>? GetQoSProvider()
     {
