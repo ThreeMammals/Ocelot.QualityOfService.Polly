@@ -10,7 +10,7 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <NoWarn>CS1591</NoWarn>
     <!--Package properties-->
-    <Version>25.0.0-beta.1</Version>
+    <Version>25.0.0-beta.2</Version>
     <PackageId>Ocelot.QualityOfService.Polly</PackageId>
     <PackageDescription>Provides Ocelot extensions to use Polly resilience.</PackageDescription>
     <PackageReleaseNotes>https://github.com/ThreeMammals/Ocelot.QualityOfService.Polly/releases</PackageReleaseNotes>
