@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Ocelot.Configuration.File;
-using Ocelot.Testing;
+using Ocelot.Testing.Steps;
 using System.Collections.Concurrent;
 using System.Net;
 using System.Runtime.CompilerServices;
 
 namespace Ocelot.QualityOfService.Polly.Acceptance;
 
-public class QosSteps : AcceptanceSteps, IQosSteps
+public class QosSteps : TimeoutSteps
 {
-    private readonly AcceptanceSteps self;
+    protected AcceptanceSteps self;
     public QosSteps(AcceptanceSteps self) => this.self = self;
 
     public async Task TestRouteCircuitBreaker(int[] ports, string upstreamPath, FileQoSOptions qos, int index = 0, bool isDiscovery = false)
@@ -97,7 +97,7 @@ public class QosSteps : AcceptanceSteps, IQosSteps
             return context.Response.WriteAsync(code.ToString());
         });
     }
-    public void GivenThereIsABrokenServiceOnline(HttpStatusCode onlineStatusCode, int index = 0, int length = 1, bool isDiscovery = false)
+    public void GivenThereIsABrokenServiceOnline(HttpStatusCode onlineStatusCode, int index = 0, bool isDiscovery = false)
     {
         if (!isDiscovery)
         {
@@ -109,14 +109,4 @@ public class QosSteps : AcceptanceSteps, IQosSteps
                 BrokenServiceStatusCode[kv.Key] = onlineStatusCode;
         }
     }
-}
-
-public interface IQosSteps
-{
-    Task TestRouteCircuitBreaker(int[] ports, string upstreamPath, FileQoSOptions qos, int index = 0, bool isDiscovery = false);
-    Task TestRouteTimeout(int[] ports, string upstreamPath, FileQoSOptions qos);
-    void GivenThereIsAServiceRunningOn(int port, HttpStatusCode statusCode,
-        Func<int> timeoutStrategy, Func<bool> failingStrategy, [CallerMemberName] string? response = null);
-    void GivenThereIsABrokenServiceRunningOn(int port, HttpStatusCode brokenStatusCode, int index = 0);
-    void GivenThereIsABrokenServiceOnline(HttpStatusCode onlineStatusCode, int index = 0, int length = 1, bool isDiscovery = false);
 }

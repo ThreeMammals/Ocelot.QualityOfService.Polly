@@ -90,7 +90,7 @@ public class PollyResiliencePipelineDelegatingHandlerTests
         _contextAccessor.Setup(x => x.HttpContext)
             .Returns(new DefaultHttpContext());
         IServiceProvider requestServices = new ServiceCollection().BuildServiceProvider();
-        _contextAccessor.Setup(x => x.HttpContext.RequestServices)
+        _contextAccessor.Setup(x => x.HttpContext!.RequestServices)
             .Returns(requestServices); // empty service provider → GetService returns null
 
         _sut = new PollyResiliencePipelineDelegatingHandler(DownstreamRouteFactory(), _contextAccessor.Object, _loggerFactory.Object);

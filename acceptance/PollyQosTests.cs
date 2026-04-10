@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Ocelot.Configuration;
 using Ocelot.Configuration.File;
 using Ocelot.DependencyInjection;
-using Ocelot.Testing.Steps;
 using Polly.CircuitBreaker;
 using Polly.Timeout;
 using Shouldly;
@@ -14,8 +13,10 @@ namespace Ocelot.QualityOfService.Polly.Acceptance;
 
 [Trait("Feat", "23")] // https://github.com/ThreeMammals/Ocelot/issues/23
 [Trait("Feat", "39")] // https://github.com/ThreeMammals/Ocelot/pull/39
-public sealed class PollyQosTests : PollyQosSteps
+public sealed class PollyQosTests : QosSteps
 {
+    public PollyQosTests() : base(null!) => self = this;
+
     [Fact]
     [Trait("Feat", "318")] // https://github.com/ThreeMammals/Ocelot/issues/318
     [Trait("PR", "319")] // https://github.com/ThreeMammals/Ocelot/pull/319
@@ -504,33 +505,4 @@ public sealed class PollyQosTests : PollyQosSteps
 
     public override void GivenThereIsAServiceRunningOn(int port, HttpStatusCode statusCode, int timeout, [CallerMemberName] string response = nameof(PollyQosTests))
         => base.GivenThereIsAServiceRunningOn(port, statusCode, timeout, response);
-}
-
-public class PollyQosSteps : TimeoutSteps, IQosSteps, IDisposable
-{
-    private readonly QosSteps steps;
-    public PollyQosSteps() => steps = new(this);
-
-    public override void Dispose()
-    {
-        steps.Dispose();
-        base.Dispose();
-        GC.SuppressFinalize(this);
-    }
-
-    public void GivenThereIsABrokenServiceOnline(HttpStatusCode onlineStatusCode, int index = 0, int length = 1, bool isDiscovery = false)
-        => steps.GivenThereIsABrokenServiceOnline(onlineStatusCode, index, length, isDiscovery);
-
-    public void GivenThereIsABrokenServiceRunningOn(int port, HttpStatusCode brokenStatusCode, int index = 0)
-        => steps.GivenThereIsABrokenServiceRunningOn(port, brokenStatusCode, index);
-
-    public void GivenThereIsAServiceRunningOn(int port, HttpStatusCode statusCode,
-        Func<int> timeoutStrategy, Func<bool> failingStrategy, [CallerMemberName] string? response = null)
-        => steps.GivenThereIsAServiceRunningOn(port, statusCode, timeoutStrategy, failingStrategy, response);
-
-    public Task TestRouteCircuitBreaker(int[] ports, string upstreamPath, FileQoSOptions qos, int index = 0, bool isDiscovery = false)
-        => steps.TestRouteCircuitBreaker(ports, upstreamPath, qos, index, isDiscovery);
-
-    public Task TestRouteTimeout(int[] ports, string upstreamPath, FileQoSOptions qos)
-        => steps.TestRouteTimeout(ports, upstreamPath, qos);
 }

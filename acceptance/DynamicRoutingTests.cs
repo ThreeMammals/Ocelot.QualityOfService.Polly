@@ -78,7 +78,7 @@ public sealed class DynamicRoutingTests : DiscoverySteps
         };
         GivenDiscoveryMetadata(route3, ports3);
 
-        var configuration = GivenDynamicRouting(new(), route1, route2, route3);
+        var configuration = GivenDynamicRouting([], route1, route2, route3);
         var globalOptions = configuration.GlobalConfiguration.QoSOptions
             = new(new QoSOptions(GlobalExceptions, GlobalBreakMs))
             {
