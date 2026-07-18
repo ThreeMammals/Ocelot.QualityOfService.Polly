@@ -1,5 +1,6 @@
-[![Ocelot Logo](/ocelot_icon.png)](https://github.com/ThreeMammals/Ocelot/ "Go to Ocelot repository")
-[![Polly Logo](/polly_logo.png)](https://github.com/App-vNext/Polly/ "Go to Polly repository")
+[![Ocelot Logo](/.config/ocelot_icon.png)](https://github.com/ThreeMammals/Ocelot/ "Go to Ocelot repository")
+[![Polly Logo](/.config/polly_logo.png)](https://github.com/App-vNext/Polly/ "Go to Polly repository")
+
 # Ocelot.QualityOfService.Polly
 [![Release](https://github.com/ThreeMammals/Ocelot.QualityOfService.Polly/actions/workflows/release.yml/badge.svg)](https://github.com/ThreeMammals/Ocelot.QualityOfService.Polly/actions/workflows/release.yml)
 [![Publish](https://github.com/ThreeMammals/Ocelot.QualityOfService.Polly/actions/workflows/publish.yml/badge.svg)](https://github.com/ThreeMammals/Ocelot.QualityOfService.Polly/actions/workflows/publish.yml)

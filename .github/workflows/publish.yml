@@ -235,7 +235,7 @@ jobs:
           echo "::endgroup::"
           echo ------------------------
           # Replaces relative GitHub paths with NuGet-friendly absolute URLs
-          sed -i 's|/ocelot_icon.png|https://raw.githubusercontent.com/ThreeMammals/Ocelot.QualityOfService.Polly/refs/heads/main/ocelot_icon.png|g; s|/polly_logo.png|https://raw.githubusercontent.com/ThreeMammals/Ocelot.QualityOfService.Polly/refs/heads/main/polly_logo.png|g' README.md
+          sed -i 's|/.config/ocelot_icon.png|https://raw.githubusercontent.com/ThreeMammals/Ocelot.QualityOfService.Polly/main/.config/ocelot_icon.png|g; s|/.config/polly_logo.png|https://raw.githubusercontent.com/ThreeMammals/Ocelot.QualityOfService.Polly/main/.config/polly_logo.png|g' README.md
           # Removes tags <sub> and </sub>
           sed -i 's/<\/\?sub>//g' README.md
           echo "::group::New content of README.md"
