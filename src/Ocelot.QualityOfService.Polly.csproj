@@ -9,11 +9,11 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <NoWarn>CS1591</NoWarn>
     <!--Package properties-->
-    <Version>25.0.0-beta.2</Version>
+    <Version>25.0.0-beta.3</Version>
     <PackageId>Ocelot.QualityOfService.Polly</PackageId>
     <PackageDescription>Provides Ocelot extensions to use Polly resilience.</PackageDescription>
     <PackageReleaseNotes>https://github.com/ThreeMammals/Ocelot.QualityOfService.Polly/releases</PackageReleaseNotes>
-    <PackageTags>ocelot;quality-of-service;polly</PackageTags>
+    <PackageTags>ocelot;quality-of-service;polly;CircuitBreaker;Timeout</PackageTags>
     <PackageIcon>ocelot_icon.png</PackageIcon>
     <PackageIconUrl>https://raw.githubusercontent.com/ThreeMammals/Ocelot/assets/images/ocelot_icon_128x128.png</PackageIconUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
