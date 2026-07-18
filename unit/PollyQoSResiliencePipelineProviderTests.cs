@@ -8,6 +8,7 @@ using Polly.Testing;
 using Polly.Timeout;
 using Shouldly;
 using System.Net;
+using System.Text;
 
 namespace Ocelot.QualityOfService.Polly.UnitTests;
 
@@ -594,11 +595,13 @@ public class PollyQoSResiliencePipelineProviderTests : UnitTest
         descriptor.Strategies.Count(static x => x.Options?.GetType() == typeof(CircuitBreakerStrategyOptions<HttpResponseMessage>)).ShouldBe(1);
         _logger.Verify(x => x.LogWarning(It.IsAny<Func<string>>()), Times.Once());
         var message = _funcMessage?.Invoke() ?? string.Empty;
-        message.ShouldBe(@"Route '/' has invalid QoSOptions for Polly's Circuit Breaker strategy. Specifically, 
-  1. The MinimumThroughput value (1) is less than the required LowMinimumThroughput threshold (2). Therefore, increase MinimumThroughput to at least 2 or higher. Until then, the default value (100) will be substituted.
-  2. The BreakDuration value (0) is outside the valid range (500 to 86400000 milliseconds). Therefore, ensure the value falls within this range; otherwise, the default value (5000) will be substituted.
-  3. The FailureRatio value (0) is outside the valid range (0 to 1). Therefore, ensure the ratio falls within this range; otherwise, the default value (0.1) will be substituted.
-  4. The SamplingDuration value (0) is outside the valid range (500 to 86400000 milliseconds). Therefore, ensure the duration falls within this range; otherwise, the default value (30000) will be substituted.");
+        var expected = new StringBuilder()
+            .AppendLine("Route '/' has invalid QoSOptions for Polly's Circuit Breaker strategy. Specifically, ")
+            .AppendLine("  1. The MinimumThroughput value (1) is less than the required LowMinimumThroughput threshold (2). Therefore, increase MinimumThroughput to at least 2 or higher. Until then, the default value (100) will be substituted.")
+            .AppendLine("  2. The BreakDuration value (0) is outside the valid range (500 to 86400000 milliseconds). Therefore, ensure the value falls within this range; otherwise, the default value (5000) will be substituted.")
+            .AppendLine("  3. The FailureRatio value (0) is outside the valid range (0 to 1). Therefore, ensure the ratio falls within this range; otherwise, the default value (0.1) will be substituted.")
+                .Append("  4. The SamplingDuration value (0) is outside the valid range (500 to 86400000 milliseconds). Therefore, ensure the duration falls within this range; otherwise, the default value (30000) will be substituted.");
+        Assert.Equal(expected.ToString(), message);
     }
 
     [Fact]
