@@ -13,7 +13,7 @@ using System.Runtime.CompilerServices;
 
 namespace Ocelot.QualityOfService.Polly.UnitTests;
 
-public class PollyResiliencePipelineDelegatingHandlerTests
+public class PollyResiliencePipelineDelegatingHandlerTests : UnitTest
 {
     private readonly Mock<DelegatingHandler> _innerHandler = new();
     private readonly Mock<IOcelotLogger> _logger = new();
@@ -39,13 +39,12 @@ public class PollyResiliencePipelineDelegatingHandlerTests
     {
         // Arrange
         var request = new HttpRequestMessage(HttpMethod.Get, "https://test.com");
-        var cancellationToken = TestContext.Current.CancellationToken;
         var fakeResponse = GivenHttpResponseMessage();
         SetupInnerHandler(fakeResponse);
         SetupResiliencePipelineProvider();
 
         // Act
-        var actual = await SendAsync(request, cancellationToken);
+        var actual = await SendAsync(request, CancelMe);
 
         // Assert
         ShouldHaveTestHeaderWithoutContent(actual);
@@ -61,14 +60,13 @@ public class PollyResiliencePipelineDelegatingHandlerTests
     {
         // Arrange
         var request = new HttpRequestMessage(HttpMethod.Get, "https://test.com");
-        var cancellationToken = TestContext.Current.CancellationToken;
         const bool PipelineIsNull = true;
         var fakeResponse = GivenHttpResponseMessage();
         SetupInnerHandler(fakeResponse);
         SetupResiliencePipelineProvider(PipelineIsNull);
 
         // Act
-        var actual = await SendAsync(request, cancellationToken);
+        var actual = await SendAsync(request, CancelMe);
 
         // Assert
         ShouldHaveTestHeaderWithoutContent(actual);
@@ -84,7 +82,6 @@ public class PollyResiliencePipelineDelegatingHandlerTests
     {
         // Arrange
         var request = new HttpRequestMessage(HttpMethod.Get, "https://test.com");
-        var cancellationToken = TestContext.Current.CancellationToken;
 
         // Setup so that the provider resolution returns null
         _contextAccessor.Setup(x => x.HttpContext)
@@ -98,7 +95,7 @@ public class PollyResiliencePipelineDelegatingHandlerTests
         SetupInnerHandler(fakeResponse);
 
         // Act
-        var response = await SendAsync(request, cancellationToken);
+        var response = await SendAsync(request, CancelMe);
 
         // Assert
         Assert.NotNull(response);

@@ -186,15 +186,15 @@ public sealed class PollyQosTests : QosSteps
         GivenThereIsAPossiblyBrokenServiceRunningOn(port1, "Hello from Laura", MillisecondsDelay);
         GivenThereIsAServiceRunningOn(port2, HttpStatusCode.OK, 0, "Hello from Tom");
         await WhenIGetUrlOnTheApiGateway("/");
-        ThenTheStatusCodeShouldBeOK();
+        ThenTheStatusCodeShouldBeOk();
         ThenTheResponseBodyShouldBe("Hello from Laura");
         await WhenIGetUrlOnTheApiGateway("/"); // repeat same request because min MinimumThroughput is 2
-        ThenTheStatusCodeShouldBeOK();
+        ThenTheStatusCodeShouldBeOk();
         ThenTheResponseBodyShouldBe("Hello from Laura");
         await WhenIGetUrlOnTheApiGateway("/");
         ThenTheStatusCodeShouldBe(HttpStatusCode.ServiceUnavailable);
         await WhenIGetUrlOnTheApiGateway("/working");
-        ThenTheStatusCodeShouldBeOK();
+        ThenTheStatusCodeShouldBeOk();
         ThenTheResponseBodyShouldBe("Hello from Tom");
         await WhenIGetUrlOnTheApiGateway("/");
         ThenTheStatusCodeShouldBe(HttpStatusCode.ServiceUnavailable);
@@ -202,7 +202,7 @@ public sealed class PollyQosTests : QosSteps
         ThenTheStatusCodeShouldBe(HttpStatusCode.ServiceUnavailable);
         await GivenIWaitMilliseconds(3000);
         await WhenIGetUrlOnTheApiGateway("/");
-        ThenTheStatusCodeShouldBeOK();
+        ThenTheStatusCodeShouldBeOk();
         ThenTheResponseBodyShouldBe("Hello from Laura");
     }
 
@@ -478,7 +478,7 @@ public sealed class PollyQosTests : QosSteps
     private static void WithPolly(IServiceCollection services)
         => services.AddOcelot().AddPolly();
 
-    private static Task GivenIWaitMilliseconds(int ms) => GivenIWaitAsync(ms);
+    private Task GivenIWaitMilliseconds(int ms) => GivenIWaitAsync(ms);
 
     private void GivenThereIsAPossiblyBrokenServiceRunningOn(int port, string responseBody, int millisecondsDelay, int requestNo = 2)
     {
@@ -494,12 +494,12 @@ public sealed class PollyQosTests : QosSteps
                 // So, we wait for 2.1 seconds to make sure the circuit is open
                 // BreakDuration * MinimumThroughput + Timeout
                 // 500 * 2 + 1000 = 2000 minimum + 100 milliseconds to exceed the minimum
-                await Task.Delay(millisecondsDelay); // 2_100
+                await Task.Delay(millisecondsDelay); // 2_100 TODO apply CancellationToken 
             }
 
             requestCount++;
             context.Response.StatusCode = (int)HttpStatusCode.OK;
-            await context.Response.WriteAsync(responseBody);
+            await context.Response.WriteAsync(responseBody); // TODO apply CancellationToken 
         });
     }
 

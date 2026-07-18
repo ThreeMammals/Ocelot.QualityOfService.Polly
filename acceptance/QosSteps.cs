@@ -78,8 +78,8 @@ public class QosSteps(AcceptanceSteps self) : TimeoutSteps
             HttpStatusCode status = failed ? HttpStatusCode.InternalServerError : statusCode;
             context.Response.StatusCode = (int)status;
             CounterStrategy?.Invoke(port);
-            return Task.Delay(delayMs)
-                .ContinueWith(t => context.Response.WriteAsync(response ?? Body(null)));
+            return Task.Delay(delayMs, context.RequestAborted)
+                .ContinueWith(t => context.Response.WriteAsync(response ?? Body(null), context.RequestAborted), context.RequestAborted);
         }
         handler.GivenThereIsAServiceRunningOn(port, MapBodyWithTimeout);
     }
@@ -93,7 +93,7 @@ public class QosSteps(AcceptanceSteps self) : TimeoutSteps
             var code = BrokenServiceStatusCode[index];
             context.Response.StatusCode = (int)code;
             CounterStrategy?.Invoke(port);
-            return context.Response.WriteAsync(code.ToString());
+            return context.Response.WriteAsync(code.ToString(), context.RequestAborted);
         });
     }
     public void GivenThereIsABrokenServiceOnline(HttpStatusCode onlineStatusCode, int index = 0, bool isDiscovery = false)

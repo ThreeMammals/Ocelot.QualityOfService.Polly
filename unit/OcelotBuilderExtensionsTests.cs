@@ -11,7 +11,7 @@ using Shouldly;
 
 namespace Ocelot.QualityOfService.Polly.UnitTests;
 
-public class OcelotBuilderExtensionsTests
+public class OcelotBuilderExtensionsTests : UnitTest
 {
     private readonly Mock<IOcelotLoggerFactory> _loggerFactory = new();
     private readonly Mock<IHttpContextAccessor> _contextAccessor = new();

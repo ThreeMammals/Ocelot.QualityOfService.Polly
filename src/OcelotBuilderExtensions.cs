@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Ocelot.Configuration;
 using Ocelot.DependencyInjection;
 using Ocelot.Errors;
@@ -41,6 +42,7 @@ public static class OcelotBuilderExtensions
             .AddSingleton<ResiliencePipelineRegistry<OcelotResiliencePipelineKey>>()
             .AddSingleton(errorMapping) // Dictionary<TKey, TValue> injection used in HttpExceptionToErrorMapper
             .AddSingleton<IPollyQoSResiliencePipelineProvider<HttpResponseMessage>, TProvider>()
+            .RemoveAll<QosDelegatingHandlerDelegate>()
             .AddSingleton(delegatingHandler);
         return builder;
     }
