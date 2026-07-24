@@ -9,7 +9,7 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <NoWarn>CS1591</NoWarn>
     <!--Package properties-->
-    <Version>25.0.0-beta.3</Version>
+    <Version>25.0.0-beta.4</Version>
     <PackageId>Ocelot.QualityOfService.Polly</PackageId>
     <PackageDescription>Provides Ocelot extensions to use Polly resilience.</PackageDescription>
     <PackageReleaseNotes>https://github.com/ThreeMammals/Ocelot.QualityOfService.Polly/releases</PackageReleaseNotes>
@@ -31,7 +31,10 @@
     <None Include="..\README.md" Pack="true" PackagePath="\" Link="package\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Ocelot" Version="25.0.0-beta.3" />
+    <PackageReference Include="Ocelot" Version="25.0.0-beta.4" />
     <PackageReference Include="Polly" Version="8.7.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Ocelot.QualityOfService.Polly.UnitTests" />
   </ItemGroup>
 </Project>
