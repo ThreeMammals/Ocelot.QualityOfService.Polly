@@ -32,7 +32,9 @@ jobs:
     - name: Build
       run: dotnet build --no-restore ./Ocelot.QualityOfService.Polly.slnx --framework net10.0
     - name: Unit tests
-      run: dotnet test --no-restore --no-build ./unit/Ocelot.QualityOfService.Polly.UnitTests.csproj --collect:"XPlat Code Coverage" --framework net10.0
+      run: |
+        dotnet test --no-restore --no-build --verbosity normal --framework net10.0 --project ./unit/Ocelot.QualityOfService.Polly.UnitTests.csproj \
+          --results-directory ./unit/TestResults --coverlet
     - name: Acceptance tests
       run: dotnet test --no-restore --no-build ./acceptance/Ocelot.QualityOfService.Polly.Acceptance.csproj --collect:"XPlat Code Coverage" --framework net10.0
     - name: Find files
@@ -42,6 +44,7 @@ jobs:
         echo "GITHUB REF NAME is ${{ github.ref_name }}"
         echo "GITHUB SHA is ${{ github.sha }}"
         # Coverage by unit tests -> https://github.com/coverlet-coverage/coverlet
+        ls -d ./unit/TestResults/*/
         coverage_1st_folder=$(ls -d ./unit/TestResults/*/ | head -1)
         echo "Detected first folder : $coverage_1st_folder"
         coverage_file="${coverage_1st_folder%/}/coverage.cobertura.xml"
