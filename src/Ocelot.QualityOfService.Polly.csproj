@@ -31,8 +31,8 @@
     <None Include="..\README.md" Pack="true" PackagePath="\" Link="package\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Ocelot" Version="25.0.0" />
-    <PackageReference Include="Polly" Version="8.7.0" />
+    <PackageReference Include="Ocelot" Version="25.0.1" />
+    <PackageReference Include="Polly" Version="8.8.0" />
   </ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Ocelot.QualityOfService.Polly.UnitTests" />
