@@ -46,10 +46,10 @@ jobs:
         echo "GITHUB REF NAME is ${{ github.ref_name }}"
         echo "GITHUB SHA is ${{ github.sha }}"
         # Coverage by unit tests -> https://github.com/coverlet-coverage/coverlet
-        ls -d ./unit/TestResults/
-        coverage_1st_folder=$(ls -d ./unit/TestResults/*/ | head -1)
-        echo "Detected first folder : $coverage_1st_folder"
-        coverage_file="${coverage_1st_folder%/}/coverage.cobertura.xml"
+        ls ./unit/TestResults/
+        coverage_pattern="./unit/TestResults/coverage.cobertura.*.xml"
+        coverage_files=($coverage_pattern)
+        coverage_file="${coverage_files[0]}"
         echo "Detecting unit coverage file... -> $coverage_file"
         if [ -f "$coverage_file" ]; then
           echo Unit coverage file exists.
@@ -61,9 +61,10 @@ jobs:
           exit 1
         fi
         # Coverage by acceptance tests -> https://github.com/coverlet-coverage/coverlet
-        coverage_1st_folder=$(ls -d ./acceptance/TestResults/*/ | head -1)
-        echo "Detected first folder : $coverage_1st_folder"
-        coverage_file="${coverage_1st_folder%/}/coverage.cobertura.xml"
+        ls ./acceptance/TestResults/
+        coverage_pattern="./acceptance/TestResults/coverage.cobertura.*.xml"
+        coverage_files=($coverage_pattern)
+        coverage_file="${coverage_files[0]}"
         echo "Detecting acceptance coverage file... -> $coverage_file"
         if [ -f "$coverage_file" ]; then
           echo Acceptance coverage file exists.
