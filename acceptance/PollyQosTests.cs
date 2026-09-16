@@ -5,7 +5,6 @@ using Ocelot.Configuration.File;
 using Ocelot.DependencyInjection;
 using Polly.CircuitBreaker;
 using Polly.Timeout;
-using Shouldly;
 using System.Net;
 using System.Runtime.CompilerServices;
 

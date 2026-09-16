@@ -6,13 +6,12 @@ using Ocelot.LoadBalancer.Balancers;
 using Ocelot.Testing.Steps;
 using System.Net;
 using TestStack.BDDfy;
-using TestStack.BDDfy.Xunit;
 
 namespace Ocelot.QualityOfService.Polly.Acceptance;
 
 public sealed class DynamicRoutingTests : DiscoverySteps
 {
-    [BddfyFact]
+    [Fact]
     [Trait("Feat", "585")] // https://github.com/ThreeMammals/Ocelot/issues/585
     [Trait("Feat", "2338")] // https://github.com/ThreeMammals/Ocelot/issues/2338
     [Trait("PR", "2339")] // https://github.com/ThreeMammals/Ocelot/pull/2339
@@ -47,7 +46,7 @@ public sealed class DynamicRoutingTests : DiscoverySteps
             .BDDfy();
     }
 
-    [BddfyFact]
+    [Fact]
     [Trait("Feat", "585")] // https://github.com/ThreeMammals/Ocelot/issues/585
     [Trait("Feat", "2338")] // https://github.com/ThreeMammals/Ocelot/issues/2338
     [Trait("PR", "2339")] // https://github.com/ThreeMammals/Ocelot/pull/2339
