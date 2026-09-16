@@ -124,13 +124,13 @@ jobs:
         with:
           repository: ThreeMammals/Ocelot
           token: ${{ secrets.OCELOT_EXTENSION_PACKAGE_RELEASE_TOKEN }}
-          name: ${{ env.PACKAGE_TAG }} Ocelot.QualityOfService.Polly
+          name: ${{ env.PACKAGE_VERSION }} Ocelot.QualityOfService.Polly
           tag_name: ${{ env.PACKAGE_VERSION }}-QualityOfService.Polly
           target_commitish: develop # top commit must contain updated docs
           body: |
-            ## Ocelot.QualityOfService.Polly version [${{ env.PACKAGE_VERSION }}](https://www.nuget.org/packages/Ocelot.QualityOfService.Polly/${{ env.PACKAGE_VERSION }})
-            > Ocelot release: [${{ env.OCELOT_VERSION }}](https://github.com/ThreeMammals/Ocelot/releases/tag/${{ env.OCELOT_VERSION }})
-            > Ocelot.QualityOfService.Polly release: [${{ env.PACKAGE_VERSION }}](https://github.com/ThreeMammals/Ocelot.QualityOfService.Polly/releases/tag/${{ env.PACKAGE_TAG }})
+            ## `Ocelot.QualityOfService.Polly` version [${{ env.PACKAGE_VERSION }}](https://www.nuget.org/packages/Ocelot.QualityOfService.Polly/${{ env.PACKAGE_VERSION }})
+            - Ocelot release: [${{ env.OCELOT_VERSION }}](https://github.com/ThreeMammals/Ocelot/releases/tag/${{ env.OCELOT_VERSION }})
+            - Ocelot.QualityOfService.Polly release: [${{ env.PACKAGE_VERSION }}](https://github.com/ThreeMammals/Ocelot.QualityOfService.Polly/releases/tag/${{ env.PACKAGE_TAG }})
           files: |
             packages/*.*pkg
           prerelease: false
